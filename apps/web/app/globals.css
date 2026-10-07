@@ -4,6 +4,7 @@
   --beige: #e3d5b1;
   --paper: #f4efe4;
   --block: 16px;
+  --title: 34px;
 }
 
 * { box-sizing: border-box; }
@@ -40,8 +41,9 @@ main {
   margin: 18px 0 0;
   color: var(--code);
   font-family: "Press Start 2P", Arial, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.08em;
+  font-size: calc(var(--title) * 0.75);
+  line-height: 1.45;
+  letter-spacing: 0.04em;
 }
 
 h1, h2 {
@@ -50,7 +52,7 @@ h1, h2 {
 }
 
 h1 {
-  font-size: 34px;
+  font-size: var(--title);
   margin: 12px 0;
 }
 
