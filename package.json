@@ -1,0 +1,20 @@
+{
+  "name": "cn-retention",
+  "private": true,
+  "version": "0.0.1",
+  "description": "CN Rention: Code Ninjas retention and gamification platform.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @cn/web",
+    "build": "npm run build -w @cn/web",
+    "lint": "npm run lint -w @cn/web",
+    "typecheck": "npm run typecheck -w @cn/shared && npm run typecheck -w @cn/web",
+    "test": "npm run test -w @cn/shared"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

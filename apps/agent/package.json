@@ -1,0 +1,6 @@
+{
+  "name": "@cn/agent",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Windows activity agent. Not built until Phase 2."
+}
