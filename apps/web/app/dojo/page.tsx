@@ -20,6 +20,10 @@ export default function DojoPage() {
     if (!picked) return;
     const { data, error } = await browserSupabase().rpc("sign_in_ninja", { target: picked.id, pin });
     setMessage(error?.message ?? data?.detail ?? "No answer.");
+    if (data?.ok) {
+      sessionStorage.setItem("block-dojo-ninja", picked.id);
+      window.location.href = "/portal";
+    }
     setPin("");
   }
 

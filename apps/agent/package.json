@@ -1,6 +1,10 @@
 {
   "name": "@cn/agent",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "private": true,
-  "description": "Windows activity agent. Not built until Phase 2."
+  "type": "module",
+  "description": "Phase 2 heartbeat client. Sends one active minute for a signed-in Ninja.",
+  "scripts": {
+    "heartbeat": "node heartbeat.mjs"
+  }
 }
