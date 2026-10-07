@@ -19,7 +19,7 @@ async function loadHealth(): Promise<Health> {
     };
   }
   try {
-    const response = await fetch(`${url}/rest/v1/`, {
+    const response = await fetch(`${url}/auth/v1/health`, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
       cache: "no-store",
     });
