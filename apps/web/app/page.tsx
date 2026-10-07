@@ -56,7 +56,7 @@ export default async function HomePage() {
       <p className="mark">CENTRAL EDMONTON</p>
       <h1>{APP_NAME}</h1>
       <p className="lede">
-        A blocky belt journey for {LOCATION_NAME}. Build, level up, and show your work. Phase {PHASE} is the first block: the dojo is live and the database can hear us.
+        A blocky belt journey for {LOCATION_NAME}. Phase {PHASE} is the foundation: belts, staff roles, roster import, and Ninja PIN sign-in.
       </p>
       <section className="card">
         <div className="status">
@@ -70,13 +70,9 @@ export default async function HomePage() {
         <p>{health.detail}</p>
       </section>
       <section className="card">
-        <h2>Next blocks</h2>
-        <ol>
-          <li>Parent portal</li>
-          <li>Coin and XP rules</li>
-          <li>The dojo TV scene</li>
-        </ol>
-        <p>Those stay locked until the next phase starts.</p>
+        <h2>Phase 1 gates</h2>
+        <p><a href="/dojo">Ninja sign-in</a> · <a href="/staff">Sensei and Director</a></p>
+        <p>Demo Ninja Pixel D. uses PIN 2468 until you import the real roster.</p>
       </section>
     </main>
   );

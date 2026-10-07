@@ -79,4 +79,16 @@ h2 { font-size: 16px; margin: 0 0 12px; }
 .ok { color: #1f7a4d; font-family: "Press Start 2P", Arial, sans-serif; font-size: 12px; }
 .wait { color: #8a5a00; font-family: "Press Start 2P", Arial, sans-serif; font-size: 12px; }
 
-ol { margin: 0; padding-left: 28px; }
+button, input, select {
+  font: inherit;
+  border: 4px solid var(--ink);
+  background: white;
+  padding: 8px;
+  margin: 6px 6px 6px 0;
+}
+
+button { background: var(--beige); cursor: pointer; }
+a { color: var(--code); }
+.roster { display: flex; flex-wrap: wrap; gap: 8px; }
+.picked { outline: 4px solid var(--code); }
+label { display: block; margin: 8px 0; }

@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Block Dojo | Code Ninjas Central Edmonton",
-  description: "Block Dojo is the Code Ninjas Central Edmonton belt journey. Phase 0 foundation.",
+  description: "Block Dojo is the Code Ninjas Central Edmonton belt journey. Phase 1 foundation.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
