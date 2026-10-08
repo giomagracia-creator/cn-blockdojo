@@ -9,7 +9,7 @@ export default function HomePage() {
       <section className="call-grid">
         <Link className="card go" href="/ninja/sign-in">Ninja</Link>
         <Link className="card" href="/staff/sign-in">Sensei / Staff</Link>
-        <p className="card">Parent · later</p>
+        <Link className="card" href="/parent">Parent</Link>
       </section>
     </main>
   );
