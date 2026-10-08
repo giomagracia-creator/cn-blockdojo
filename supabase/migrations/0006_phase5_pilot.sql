@@ -1,5 +1,13 @@
 -- Phase 5: second dojo display, pilot notes, keep-alive, and purge.
 
+create table if not exists public.health_pings (
+  id bigint generated always as identity primary key,
+  source text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.health_pings enable row level security;
+
 alter table public.dojos add column if not exists slug text;
 create unique index if not exists dojos_slug on public.dojos (slug);
 
