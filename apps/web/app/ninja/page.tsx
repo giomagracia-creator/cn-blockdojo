@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useGame } from "../game";
 import { PixelNinja } from "./pixel";
+import { browserSupabase } from "../../lib/supabase";
 
 const boyHair = [
   ["buzzcut", "Buzz"],
@@ -52,6 +53,7 @@ export default function NinjaHome() {
   const lookName = hairColors.find(([hex]) => hex === hairColor)?.[1] ?? "Black";
 
   useEffect(() => {
+    let cancel = false;
     const id = sessionStorage.getItem("block-dojo-ninja") ?? "guest";
     const saved = localStorage.getItem(`block-dojo-look-${id}`);
     if (saved) {
@@ -64,13 +66,29 @@ export default function NinjaHome() {
         localStorage.removeItem(`block-dojo-look-${id}`);
       }
     }
-    setReady(true);
+    if (id === "guest") {
+      setReady(true);
+      return;
+    }
+    browserSupabase().rpc("get_look", { target: id }).then(({ data }) => {
+      if (cancel || !data || typeof data !== "object") {
+        setReady(true);
+        return;
+      }
+      const look = data as { sprite?: string; hair?: string; color?: string };
+      if (look.sprite === "boy" || look.sprite === "girl") setSprite(look.sprite);
+      if (look.hair) setHair(look.hair);
+      if (look.color) setHairColor(look.color);
+      setReady(true);
+    });
+    return () => { cancel = true; };
   }, []);
 
   useEffect(() => {
     if (!ready) return;
     const id = sessionStorage.getItem("block-dojo-ninja") ?? "guest";
     localStorage.setItem(`block-dojo-look-${id}`, JSON.stringify({ sprite, hair, color: hairColor }));
+    if (id !== "guest") browserSupabase().rpc("save_look", { target: id, sprite, hair, color: hairColor });
   }, [ready, sprite, hair, hairColor]);
 
   return (
@@ -137,7 +155,7 @@ export default function NinjaHome() {
               ))}
             </div>
           </section>
-          <p className="hint">This look stays on this computer for the next sign-in.</p>
+          <p className="hint">This look stays with your name, on any dojo computer.</p>
         </details>
 
         <h2>Gear</h2>
