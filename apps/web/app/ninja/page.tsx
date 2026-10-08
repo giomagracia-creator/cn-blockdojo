@@ -48,7 +48,7 @@ export default function NinjaHome() {
         <p>LV {level} <span className="bar"><i style={{ width: `${Math.min(100, (xp / 30) * 100)}%` }} /></span> XP {xp}/30 · {profile?.coins ?? 0} coins</p>
         <p className="track">{Array.from({ length: 20 }, (_, index) => index < level ? "◆" : "◇").join(" ")}</p>
       </section>
-      <p><Link href="/credits">Credits</Link> · Kenney pixel pack, idle and cheer.</p>
+      <p><Link href="/credits">Credits</Link> · LPC light body, human male head, neutral face.</p>
     </main>
   );
 }
