@@ -127,7 +127,9 @@ a.card {
 }
 a.card.go, a.card.stop { color: white; }
 
-.ninja-card { margin-top: 16px; }
+.who { margin: 0; font-size: 20px; }
+.keypad { display: grid; grid-template-columns: repeat(3, 72px); gap: 8px; }
+.pin { font-family: "Press Start 2P", Arial, sans-serif; letter-spacing: 0.3em; }
 
 .topnav a:active, button:active {
   transform: translate(2px, 2px);

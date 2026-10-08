@@ -67,8 +67,12 @@ export default function DirectorPage() {
 
   return (
     <main>
-      <p className="mark">DIRECTOR</p>
+      <p className="mark">OVERVIEW</p>
       <h1>{dojo?.name ?? "Block Dojo"}</h1>
+      <section className="card">
+        <h2>System status</h2>
+        <p>The dojo page is live. Database checks stay here, not on the front door.</p>
+      </section>
       <form className="card" onSubmit={saveSeat}>
         <h2>Seat limit</h2>
         <input value={seat} onChange={(event) => setSeat(event.target.value)} />
