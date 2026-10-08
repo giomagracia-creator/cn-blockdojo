@@ -3,8 +3,10 @@ export default function CreditsPage() {
     <main>
       <h1>Credits</h1>
       <section className="card">
-        <p>The Ninja on the card is original Block Dojo pixel art. It is not a Stardew Valley or Minecraft sprite.</p>
-        <p>No LPC or Kenney files are bundled in this build. If those open packs are added later, their credits and licences will be listed here.</p>
+        <p>Character, cheer pose, and tiles are from Kenney Platformer Characters 1 and Pixel Platformer.</p>
+        <p>Licence: Creative Commons Zero. Kenney.nl. Credit is not required. We list it anyway.</p>
+        <p>No Stardew Valley or Minecraft art is used. The wooden frame and slots are original Block Dojo layout.</p>
+        <p>Support the pack at kenney.nl/donate.</p>
       </section>
     </main>
   );
