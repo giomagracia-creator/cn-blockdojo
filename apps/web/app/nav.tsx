@@ -43,14 +43,7 @@ export function DojoNav() {
       </nav>
       <p className="who">Signed in as {name || role} · <button type="button" onClick={() => { document.cookie = "bd_role=; path=/; max-age=0"; document.cookie = "bd_name=; path=/; max-age=0"; window.location.href = "/"; }}>Sign out</button></p>
       {role === "ninja" && game.profile ? (
-        <div className="hud">
-          <span>{game.profile.first_name}</span>
-          <span>{game.profile.belt} L{game.profile.level}</span>
-          <span className="bar"><i style={{ width: `${Math.min(100, (game.profile.xp_in_level / 30) * 100)}%` }} /></span>
-          <span>{game.profile.coins} coins</span>
-          <span>{game.equipped || "no skin"}</span>
-          {game.toast ? <span>{game.toast}</span> : null}
-        </div>
+        <p className="hud">Lv {game.profile.level} · {game.profile.coins} coins{game.toast ? ` · ${game.toast}` : ""}</p>
       ) : null}
     </header>
   );
