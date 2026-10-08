@@ -123,7 +123,8 @@ a.card {
   font-family: "Press Start 2P", Arial, sans-serif;
   font-size: 14px;
 }
-a.card.go, a.card.stop { color: white; }
+a.card.go { background: var(--code); color: white; }
+a.card.stop { background: var(--ink); color: var(--beige); }
 
 .who { margin: 0; font-size: 20px; }
 .keypad { display: grid; grid-template-columns: repeat(3, 72px); gap: 8px; }
