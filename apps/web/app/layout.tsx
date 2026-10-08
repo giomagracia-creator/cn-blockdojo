@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { DojoNav } from "./nav";
+import { Motion } from "./motion";
 
 export const metadata: Metadata = {
   title: "Block Dojo | Code Ninjas Central Edmonton",

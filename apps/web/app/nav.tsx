@@ -1,25 +1,27 @@
+import Link from "next/link";
+
 export function DojoNav() {
   return (
     <header className="topnav">
-      <a className="brand" href="/">Block Dojo</a>
+      <Link className="brand" href="/">Block Dojo</Link>
       <nav>
         <div>
           <span>Floor</span>
-          <a href="/">Home</a>
-          <a href="/tv">TV</a>
+          <Link href="/">Home</Link>
+          <Link href="/tv">TV</Link>
         </div>
         <div>
           <span>Ninjas</span>
-          <a href="/dojo">Sign in</a>
-          <a href="/portal">Portal</a>
+          <Link href="/dojo">Sign in</Link>
+          <Link href="/portal">Portal</Link>
         </div>
         <div>
           <span>Staff</span>
-          <a href="/staff">Gate</a>
-          <a href="/sensei">Sensei</a>
-          <a href="/director">Director</a>
-          <a href="/director/import">Import</a>
-          <a href="/director/pins">PIN sheet</a>
+          <Link href="/staff">Gate</Link>
+          <Link href="/sensei">Sensei</Link>
+          <Link href="/director">Director</Link>
+          <Link href="/director/import">Import</Link>
+          <Link href="/director/pins">PIN sheet</Link>
         </div>
       </nav>
     </header>

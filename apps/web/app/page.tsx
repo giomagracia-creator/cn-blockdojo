@@ -1,4 +1,5 @@
 import { APP_NAME, LOCATION_NAME, PHASE } from "@cn/shared";
+import Link from "next/link";
 
 type Health = {
   app: string;
@@ -70,9 +71,9 @@ export default async function HomePage() {
         <p>{health.detail}</p>
       </section>
       <section className="call-grid">
-        <a className="card go" href="/dojo">Ninja sign-in</a>
-        <a className="card" href="/tv">Dojo TV</a>
-        <a className="card stop" href="/staff">Staff gate</a>
+        <Link className="card go" href="/dojo">Ninja sign-in</Link>
+        <Link className="card" href="/tv">Dojo TV</Link>
+        <Link className="card stop" href="/staff">Staff gate</Link>
       </section>
     </main>
   );
