@@ -9,7 +9,8 @@ export default function CreditsPage() {
         <p>Head authors: bluecarrot16, Benjamin K. Smith (BenCreating), Stephen Challener (Redshrike).</p>
         <p>Face authors: JaidynReiman, ElizaWy, Stephen Challener (Redshrike).</p>
         <p>Source: https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/</p>
-        <p>Every Ninja wears boxers. The blue shorts are an original overlay so no character is shown bare.</p>
+        <p>Shirt, shorts, and buzz-cut hair are LPC layers on the same walk frames as the body, so they move with each step.</p>
+        <p>Shirt: torso/clothes/longsleeve. Shorts: legs/shorts. Hair: hair/buzzcut. Same LPC licences and authors as the body.</p>
       </section>
     </main>
   );
