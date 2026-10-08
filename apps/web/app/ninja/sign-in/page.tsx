@@ -48,7 +48,11 @@ export default function NinjaSignIn() {
               <button key={key} type="button" className="go" onClick={() => {
                 if (key === "clear") setPin("");
                 else if (key === "ok") signIn();
-                else setPin((value) => (value + key).slice(0, 4));
+                else {
+                  const next = (pin + key).slice(0, 4);
+                  setPin(next);
+                  if (next.length === 4) signIn(next);
+                }
               }}>{key}</button>
             ))}
           </div>

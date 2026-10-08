@@ -106,14 +106,12 @@ body {
   box-shadow: 8px 8px 0 var(--beige);
   padding: 18px;
   margin-top: 24px;
-  opacity: 0;
-  transform: translateY(18px);
+  animation: rise 0.35s ease;
 }
 
-.card.in {
-  opacity: 1;
-  transform: none;
-  transition: opacity 0.45s ease, transform 0.45s ease, box-shadow 0.2s ease;
+@keyframes rise {
+  from { transform: translateY(12px); }
+  to { transform: none; }
 }
 
 .card:hover { box-shadow: 12px 12px 0 var(--code); }
