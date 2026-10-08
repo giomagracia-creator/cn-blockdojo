@@ -18,7 +18,13 @@ export default function StaffSignIn() {
     }
     const { data: staff } = await supabase.from("staff_users").select("role, email").eq("auth_user_id", data.user.id).maybeSingle();
     if (!staff) {
-      setMessage("This login has no role yet. Claim Director only if you are the first one.");
+      const claimed = await supabase.rpc("claim_director");
+      setMessage(claimed.error?.message ?? String(claimed.data));
+      if (claimed.data === "Director claimed.") {
+        document.cookie = "bd_role=director; path=/; max-age=28800";
+        document.cookie = `bd_name=${encodeURIComponent(email)}; path=/; max-age=28800`;
+        window.location.href = "/director";
+      }
       return;
     }
     document.cookie = `bd_role=${staff.role}; path=/; max-age=28800`;
@@ -31,6 +37,7 @@ export default function StaffSignIn() {
     setMessage(error?.message ?? String(data));
     if (data === "Director claimed.") {
       document.cookie = "bd_role=director; path=/; max-age=28800";
+      document.cookie = `bd_name=${encodeURIComponent(email || "Director")}; path=/; max-age=28800`;
       window.location.href = "/director";
     }
   }
