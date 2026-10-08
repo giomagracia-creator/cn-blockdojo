@@ -40,7 +40,7 @@ export default function ShopPage() {
           <button className="go" type="button" onClick={() => buy(item.id)}>Buy</button>
         </section>
       ))}
-      <p>{ninja ? message : "Sign in as a Ninja to buy."}</p>
+      <p>{message}</p>
     </main>
   );
 }

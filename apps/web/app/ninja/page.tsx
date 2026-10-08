@@ -1,6 +1,6 @@
 "use client";
 
-import { useGame } from "../../game";
+import { useGame } from "../game";
 
 export default function NinjaHome() {
   const { profile, equipped, owned } = useGame();
