@@ -48,6 +48,7 @@ alter table public.waivers enable row level security;
 
 drop policy if exists inventory_read on public.inventory;
 create policy inventory_read on public.inventory for select using (true);
+drop policy if exists shop_read on public.shop_items;
 create policy shop_read on public.shop_items for select using (true);
 drop policy if exists staff_orders on public.orders;
 create policy staff_orders on public.orders for select using (public.is_staff());
