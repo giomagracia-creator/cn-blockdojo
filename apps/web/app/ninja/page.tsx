@@ -43,7 +43,7 @@ export default function NinjaHome() {
   const [hair, setHair] = useState("buzzcut");
   const [hairColor, setHairColor] = useState(hairColors[0][0]);
   const [sprite, setSprite] = useState<"boy" | "girl">("boy");
-  const [ready, setReady] = useState(false);
+  const [note, setNote] = useState("");
   const name = profile?.first_name ?? "Pixel";
   const belt = profile?.belt ?? "White";
   const level = profile?.level ?? 1;
@@ -52,44 +52,39 @@ export default function NinjaHome() {
   const xpWidth = Math.min(100, (xp / 30) * 100);
   const lookName = hairColors.find(([hex]) => hex === hairColor)?.[1] ?? "Black";
 
-  useEffect(() => {
-    let cancel = false;
-    const id = sessionStorage.getItem("block-dojo-ninja") ?? "guest";
-    const saved = localStorage.getItem(`block-dojo-look-${id}`);
-    if (saved) {
-      try {
-        const look = JSON.parse(saved) as { sprite?: string; hair?: string; color?: string };
-        if (look.sprite === "boy" || look.sprite === "girl") setSprite(look.sprite);
-        if (look.hair) setHair(look.hair);
-        if (look.color) setHairColor(look.color);
-      } catch {
-        localStorage.removeItem(`block-dojo-look-${id}`);
-      }
-    }
-    if (id === "guest") {
-      setReady(true);
+  function remember(next: { sprite: "boy" | "girl"; hair: string; color: string }) {
+    const id = sessionStorage.getItem("block-dojo-ninja");
+    if (!id) {
+      setNote("Sign in again so this look can be saved.");
       return;
     }
+    localStorage.setItem(`block-dojo-look-${id}`, JSON.stringify(next));
+    browserSupabase().rpc("save_look", { target: id, sprite: next.sprite, hair: next.hair, color: next.color }).then(({ data, error }) => {
+      setNote(error ? "Saved on this computer only." : data === "Look saved." ? "Saved." : String(data ?? "Saved."));
+    });
+  }
+
+  useEffect(() => {
+    const id = sessionStorage.getItem("block-dojo-ninja");
+    if (!id) return;
+    const raw = localStorage.getItem(`block-dojo-look-${id}`);
+    let local: { sprite?: string; hair?: string; color?: string } | null = null;
+    if (raw) {
+      try { local = JSON.parse(raw); } catch { local = null; }
+    }
+    if (local?.sprite === "boy" || local?.sprite === "girl") setSprite(local.sprite);
+    if (local?.hair) setHair(local.hair);
+    if (local?.color) setHairColor(local.color);
     browserSupabase().rpc("get_look", { target: id }).then(({ data }) => {
-      if (cancel || !data || typeof data !== "object") {
-        setReady(true);
-        return;
-      }
-      const look = data as { sprite?: string; hair?: string; color?: string };
+      if (!data || typeof data !== "object") return;
+      const look = data as { sprite?: string; hair?: string; color?: string; saved?: boolean };
+      const serverDefault = !look.saved && (look.sprite ?? "boy") === "boy" && (look.hair ?? "buzzcut") === "buzzcut" && (look.color ?? "#1c1c1e") === "#1c1c1e";
+      if (local && serverDefault) return;
       if (look.sprite === "boy" || look.sprite === "girl") setSprite(look.sprite);
       if (look.hair) setHair(look.hair);
       if (look.color) setHairColor(look.color);
-      setReady(true);
     });
-    return () => { cancel = true; };
   }, []);
-
-  useEffect(() => {
-    if (!ready) return;
-    const id = sessionStorage.getItem("block-dojo-ninja") ?? "guest";
-    localStorage.setItem(`block-dojo-look-${id}`, JSON.stringify({ sprite, hair, color: hairColor }));
-    if (id !== "guest") browserSupabase().rpc("save_look", { target: id, sprite, hair, color: hairColor });
-  }, [ready, sprite, hair, hairColor]);
 
   return (
     <main className="journal-wrap">
@@ -133,29 +128,29 @@ export default function NinjaHome() {
           <section className="hair-menu">
             <p>Body</p>
             <div className="hair-picks">
-              <button type="button" className={sprite === "boy" ? "on" : ""} onClick={() => setSprite("boy")}>Boy</button>
-              <button type="button" className={sprite === "girl" ? "on" : ""} onClick={() => setSprite("girl")}>Girl</button>
+              <button type="button" className={sprite === "boy" ? "on" : ""} onClick={() => { setSprite("boy"); remember({ sprite: "boy", hair, color: hairColor }); }}>Boy</button>
+              <button type="button" className={sprite === "girl" ? "on" : ""} onClick={() => { setSprite("girl"); remember({ sprite: "girl", hair, color: hairColor }); }}>Girl</button>
             </div>
             <p>Boys</p>
             <div className="hair-picks">
               {boyHair.map(([id, label]) => (
-                <button key={id} type="button" className={hair === id ? "on" : ""} onClick={() => setHair(id)}>{label}</button>
+                <button key={id} type="button" className={hair === id ? "on" : ""} onClick={() => { setHair(id); remember({ sprite, hair: id, color: hairColor }); }}>{label}</button>
               ))}
             </div>
             <p>Girls</p>
             <div className="hair-picks">
               {girlHair.map(([id, label]) => (
-                <button key={id} type="button" className={hair === id ? "on" : ""} onClick={() => setHair(id)}>{label}</button>
+                <button key={id} type="button" className={hair === id ? "on" : ""} onClick={() => { setHair(id); remember({ sprite, hair: id, color: hairColor }); }}>{label}</button>
               ))}
             </div>
             <p>Color</p>
             <div className="swatches">
               {hairColors.map(([color, label]) => (
-                <button key={color} type="button" className={hairColor === color ? "on" : ""} style={{ background: color }} aria-label={label} title={label} onClick={() => setHairColor(color)} />
+                <button key={color} type="button" className={hairColor === color ? "on" : ""} style={{ background: color }} aria-label={label} title={label} onClick={() => { setHairColor(color); remember({ sprite, hair, color }); }} />
               ))}
             </div>
           </section>
-          <p className="hint">This look stays with your name, on any dojo computer.</p>
+          <p className="hint">{note || "Tap a look. It is saved as soon as you tap."}</p>
         </details>
 
         <h2>Gear</h2>
