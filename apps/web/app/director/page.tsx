@@ -69,7 +69,6 @@ export default function DirectorPage() {
     <main>
       <p className="mark">DIRECTOR</p>
       <h1>{dojo?.name ?? "Block Dojo"}</h1>
-      <p><a href="/director/import">Import roster</a> · <a href="/director/pins">PIN sheet</a> · <a href="/sensei">Sensei view</a></p>
       <form className="card" onSubmit={saveSeat}>
         <h2>Seat limit</h2>
         <input value={seat} onChange={(event) => setSeat(event.target.value)} />

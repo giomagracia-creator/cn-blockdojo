@@ -70,9 +70,8 @@ export default async function HomePage() {
         <p>{health.detail}</p>
       </section>
       <section className="card">
-        <h2>Phase 1 gates</h2>
-        <p><a href="/dojo">Ninja sign-in</a> · <a href="/portal">Ninja portal</a> · <a href="/tv">Dojo TV</a> · <a href="/staff">Sensei and Director</a></p>
-        <p>Phase 2 adds XP, coins, the TV scene, and the lock-screen button. Run the new SQL file before those buttons work.</p>
+        <h2>Use the menu</h2>
+        <p>Floor, Ninjas, and Staff stay at the top of every page. Hover a button and it shakes.</p>
       </section>
     </main>
   );

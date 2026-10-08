@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { DojoNav } from "./nav";
 
 export const metadata: Metadata = {
   title: "Block Dojo | Code Ninjas Central Edmonton",
@@ -17,7 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <DojoNav />
+        {children}
+      </body>
     </html>
   );
 }
