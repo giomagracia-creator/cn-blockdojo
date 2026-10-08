@@ -22,7 +22,6 @@ const slots = [
   ["Badge", "Empty. Badges come from quests."],
   ["Title", "Empty. A title sits under your name."],
   ["Tag", "Empty. This is the name on the TV."],
-  ["Pet", "Empty. A pet stands beside you."],
   ["Outfit", "Starter gi. Buy a skin to change it."],
 ];
 
@@ -53,7 +52,6 @@ export default function NinjaHome() {
         <div className="journal-main">
           <div className="scene">
             <PixelNinja belt={belt} equipped={equipped} hair={hair} color={hairColor} sprite={sprite} />
-            <img className="pet" src="/kenney/char_0004.png" alt="" />
           </div>
           <div className="stats">
             <div>
