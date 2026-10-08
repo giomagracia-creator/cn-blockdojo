@@ -11,7 +11,7 @@ function homeFor(role: string | undefined) {
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const role = request.cookies.get("bd_role")?.value;
-  const open = path === "/" || path.startsWith("/parent") || path.startsWith("/ninja/sign-in") || path.startsWith("/staff/sign-in") || path.startsWith("/tv");
+  const open = path === "/" || path.startsWith("/parent") || path.startsWith("/credits") || path.startsWith("/ninja/sign-in") || path.startsWith("/staff/sign-in") || path.startsWith("/tv");
   if (open) return NextResponse.next();
 
   const url = request.nextUrl.clone();
