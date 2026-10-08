@@ -256,3 +256,13 @@ a { color: var(--code); }
 .roster { display: flex; flex-wrap: wrap; gap: 8px; }
 .picked { outline: 4px solid var(--code); }
 label { display: block; margin: 8px 0; }
+
+.lobby { min-height: 100vh; background: #1c1c1e; color: #f7f4ee; padding: 24px; }
+.lobby.live { background: #120c08; }
+.celebrate { position: relative; text-align: center; padding-top: 12vh; overflow: hidden; min-height: 80vh; }
+.celebrate h1 { font-size: 64px; color: white; }
+.swap i { display: inline-block; width: 28px; height: 28px; border: 3px solid white; vertical-align: middle; }
+.confetti span { position: absolute; top: -12px; width: 10px; height: 14px; background: #338fbf; animation: drop 2.8s linear infinite; }
+.confetti span:nth-child(odd) { background: #f0d48a; }
+.confetti span:nth-child(3n) { background: #e38aaa; }
+@keyframes drop { to { transform: translateY(100vh) rotate(180deg); } }

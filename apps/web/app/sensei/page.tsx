@@ -65,6 +65,8 @@ export default function SenseiPage() {
           <span>Scene</span>
           <button className="go" type="button" onClick={() => act("set_scene", { scene: "block-dojo" })}>Block scene</button>
           <button type="button" onClick={() => act("set_scene", { scene: "training-hall" })}>Training scene</button>
+          <button type="button" onClick={() => act("set_scene", { scene: "winter" })}>Winter scene</button>
+          <button type="button" onClick={() => act("set_scene", { scene: "summer" })}>Summer scene</button>
         </div>
       </section>
     </main>
