@@ -70,13 +70,64 @@ body {
   box-shadow: 4px 4px 0 var(--ink);
   padding: 8px 10px;
   margin: 0;
+  font-family: "Press Start 2P", Arial, sans-serif;
+  font-size: 10px;
+  line-height: 1.4;
   transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
 }
 
+.go, button.go { background: var(--code); color: white; }
+.stop, button.stop { background: var(--ink); color: var(--beige); }
+.warn, button.warn { background: #f0d48a; }
+
 .topnav a:hover, button:hover {
   background: white;
+  color: var(--ink);
   animation: shake 0.35s linear;
 }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.actions span {
+  width: 100%;
+  font-family: "Press Start 2P", Arial, sans-serif;
+  font-size: 9px;
+  color: var(--code);
+}
+
+.card {
+  background: white;
+  border: 4px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--beige);
+  padding: 18px;
+  margin-top: 24px;
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.card.in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.45s ease, transform 0.45s ease, box-shadow 0.2s ease;
+}
+
+.card:hover { box-shadow: 12px 12px 0 var(--code); }
+
+a.card {
+  display: block;
+  color: var(--ink);
+  text-decoration: none;
+  font-family: "Press Start 2P", Arial, sans-serif;
+  font-size: 14px;
+}
+a.card.go, a.card.stop { color: white; }
+
+.ninja-card { margin-top: 16px; }
 
 .topnav a:active, button:active {
   transform: translate(2px, 2px);
@@ -93,6 +144,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .topnav a:hover, button:hover { animation: none; }
+  .card { opacity: 1; transform: none; }
 }
 
 main {
@@ -133,14 +185,6 @@ h1 {
 h2 { font-size: 16px; margin: 0 0 12px; }
 
 .lede, p, li { line-height: 1.25; }
-
-.card {
-  background: white;
-  border: 4px solid var(--ink);
-  box-shadow: 8px 8px 0 var(--beige);
-  padding: 18px;
-  margin-top: 24px;
-}
 
 .status {
   display: flex;

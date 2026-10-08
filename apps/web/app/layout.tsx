@@ -20,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <DojoNav />
+        <Motion />
         {children}
       </body>
     </html>

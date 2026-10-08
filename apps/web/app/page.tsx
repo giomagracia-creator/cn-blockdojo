@@ -69,9 +69,10 @@ export default async function HomePage() {
         </div>
         <p>{health.detail}</p>
       </section>
-      <section className="card">
-        <h2>Use the menu</h2>
-        <p>Floor, Ninjas, and Staff stay at the top of every page. Hover a button and it shakes.</p>
+      <section className="call-grid">
+        <a className="card go" href="/dojo">Ninja sign-in</a>
+        <a className="card" href="/tv">Dojo TV</a>
+        <a className="card stop" href="/staff">Staff gate</a>
       </section>
     </main>
   );

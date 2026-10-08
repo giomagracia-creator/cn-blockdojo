@@ -39,21 +39,33 @@ export default function SenseiPage() {
       <h1>Live roster</h1>
       <section className="card">
         {ninjas.map((ninja) => (
-          <p key={ninja.id}>
-            {ninja.first_name} {ninja.last_initial}. {ninja.locked ? "locked" : "open"} · misses {ninja.pin_failures}
-            <button type="button" onClick={() => unlock(ninja.id)}>Unlock</button>
-            <button type="button" onClick={() => lookup(ninja.id)}>Look up PIN</button>
-            <button type="button" onClick={() => act("award_xp", { target: ninja.id, amount: 10, reason: "sensei award" })}>+10 XP</button>
-            <button type="button" onClick={() => act("award_xp", { target: ninja.id, amount: -10, reason: "sensei remove" })}>-10 XP</button>
-            <button type="button" onClick={() => act("start_powerup", { target: ninja.id })}>Power-up</button>
-            <button type="button" onClick={() => act("lock_screen", { target: ninja.id })}>Lock screen</button>
-            <button type="button" onClick={() => act("record_minute", { target: ninja.id, device_name: "pilot-pc", active_buckets: 4 })}>One active minute</button>
-          </p>
+          <article className="card ninja-card" key={ninja.id}>
+            <h2>{ninja.first_name} {ninja.last_initial}.</h2>
+            <p>{ninja.locked ? "Locked" : "Open"} · misses {ninja.pin_failures}</p>
+            <div className="actions">
+              <span>Rewards</span>
+              <button className="go" type="button" onClick={() => act("award_xp", { target: ninja.id, amount: 10, reason: "sensei award" })}>+10 XP</button>
+              <button className="warn" type="button" onClick={() => act("award_xp", { target: ninja.id, amount: -10, reason: "sensei remove" })}>-10 XP</button>
+              <button type="button" onClick={() => act("start_powerup", { target: ninja.id })}>Power-up</button>
+            </div>
+            <div className="actions">
+              <span>Safety</span>
+              <button className="stop" type="button" onClick={() => act("lock_screen", { target: ninja.id })}>Lock screen</button>
+              <button type="button" onClick={() => unlock(ninja.id)}>Unlock</button>
+              <button className="warn" type="button" onClick={() => lookup(ninja.id)}>Look up PIN</button>
+            </div>
+            <div className="actions">
+              <span>Practice</span>
+              <button type="button" onClick={() => act("record_minute", { target: ninja.id, device_name: "pilot-pc", active_buckets: 4 })}>One active minute</button>
+            </div>
+          </article>
         ))}
         <p>{message}</p>
-        <button type="button" onClick={() => act("set_scene", { scene: "block-dojo" })}>Block scene</button>
-        <button type="button" onClick={() => act("set_scene", { scene: "training-hall" })}>Training scene</button>
-        <p><a href="/tv">Open the dojo TV</a></p>
+        <div className="actions">
+          <span>Scene</span>
+          <button className="go" type="button" onClick={() => act("set_scene", { scene: "block-dojo" })}>Block scene</button>
+          <button type="button" onClick={() => act("set_scene", { scene: "training-hall" })}>Training scene</button>
+        </div>
       </section>
     </main>
   );
