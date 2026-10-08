@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useGame } from "./game";
 
 const shells = {
   ninja: [["/ninja", "Home"], ["/ninja/quests", "Quests"], ["/ninja/shop", "Shop"], ["/ninja/locker", "Locker"], ["/ninja/leaderboard", "Leaderboard"]],
@@ -20,6 +21,7 @@ function roleFromPath(path: string) {
 export function DojoNav() {
   const path = usePathname();
   const role = roleFromPath(path);
+  const game = useGame();
   const [name, setName] = useState("");
   useEffect(() => {
     setName(decodeURIComponent(document.cookie.match(/bd_name=([^;]+)/)?.[1] ?? ""));
@@ -40,6 +42,16 @@ export function DojoNav() {
         {shells[role].map(([href, label]) => <Link key={href} href={href}>{label}</Link>)}
       </nav>
       <p className="who">Signed in as {name || role} · <button type="button" onClick={() => { document.cookie = "bd_role=; path=/; max-age=0"; document.cookie = "bd_name=; path=/; max-age=0"; window.location.href = "/"; }}>Sign out</button></p>
+      {role === "ninja" && game.profile ? (
+        <div className="hud">
+          <span>{game.profile.first_name}</span>
+          <span>{game.profile.belt} L{game.profile.level}</span>
+          <span className="bar"><i style={{ width: `${Math.min(100, (game.profile.xp_in_level / 30) * 100)}%` }} /></span>
+          <span>{game.profile.coins} coins</span>
+          <span>{game.equipped || "no skin"}</span>
+          {game.toast ? <span>{game.toast}</span> : null}
+        </div>
+      ) : null}
     </header>
   );
 }

@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { browserSupabase } from "../../../lib/supabase";
+import { useGame } from "../../game";
 
 type Item = { id: string; name: string; description: string; price: number; stock: number; kind: string };
 
 export default function ShopPage() {
   const [items, setItems] = useState<Item[]>([]);
   const [message, setMessage] = useState("Pick an item. Coins come off the belt journey.");
-  const ninja = typeof window === "undefined" ? "" : sessionStorage.getItem("block-dojo-ninja") ?? "";
+  const game = useGame();
 
   useEffect(() => {
     browserSupabase().from("shop_items").select("id, name, description, price, stock, kind").then(({ data }) => setItems(data ?? []));
@@ -22,6 +23,10 @@ export default function ShopPage() {
     }
     const { data, error } = await browserSupabase().rpc("buy_item", { target, item: id });
     setMessage(error?.message ?? data?.detail ?? "No answer.");
+    if (data?.ok) {
+      const item = items.find((row) => row.id === id);
+      if (item) game.bought(item.name, item.price);
+    }
   }
 
   return (

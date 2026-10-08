@@ -126,7 +126,10 @@ a.card {
 a.card.go { background: var(--code); color: white; }
 a.card.stop { background: var(--ink); color: var(--beige); }
 
-.who { margin: 0; font-size: 20px; }
+.hud { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; align-items: center; }
+.bar { width: 120px; height: 12px; border: 3px solid var(--ink); background: white; }
+.bar i { display: block; height: 100%; background: var(--code); }
+.avatar { width: 64px; height: 64px; background: var(--code); color: white; display: grid; place-items: center; border: 4px solid var(--ink); font-family: "Press Start 2P", Arial, sans-serif; }
 .keypad { display: grid; grid-template-columns: repeat(3, 72px); gap: 8px; }
 .pin { font-family: "Press Start 2P", Arial, sans-serif; letter-spacing: 0.3em; }
 

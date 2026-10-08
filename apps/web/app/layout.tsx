@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { DojoNav } from "./nav";
 import { Motion } from "./motion";
+import { GameProvider } from "./game";
 
 export const metadata: Metadata = {
   title: "Block Dojo | Code Ninjas Central Edmonton",
@@ -20,9 +21,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <DojoNav />
-        <Motion />
-        {children}
+        <GameProvider>
+          <DojoNav />
+          <Motion />
+          {children}
+        </GameProvider>
       </body>
     </html>
   );
