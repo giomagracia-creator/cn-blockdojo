@@ -5,6 +5,18 @@ import { useState } from "react";
 import { useGame } from "../game";
 import { PixelNinja } from "./pixel";
 
+const boyHair = [
+  ["buzzcut", "Buzz"],
+  ["bedhead", "Bedhead"],
+  ["cowlick", "Cowlick"],
+];
+const girlHair = [
+  ["bob", "Bob"],
+  ["long", "Long"],
+  ["curly_short", "Curls"],
+];
+const hairColors = ["#1c1c1e", "#6b3a1f", "#a84820", "#e2b657", "#f0d48a", "#c0392b", "#338fbf", "#1d4e89", "#7b4ea3", "#e38aaa"];
+
 const slots = [
   ["Hat", "Empty. Hats show up in the locker."],
   ["Badge", "Empty. Badges come from quests."],
@@ -17,6 +29,9 @@ const slots = [
 export default function NinjaHome() {
   const { profile, equipped, owned, equip } = useGame();
   const [tip, setTip] = useState("Tap a slot to see what it does.");
+  const [hair, setHair] = useState("buzzcut");
+  const [hairColor, setHairColor] = useState(hairColors[0]);
+  const [hairOpen, setHairOpen] = useState(false);
   const name = profile?.first_name ?? "Pixel";
   const belt = profile?.belt ?? "White";
   const level = profile?.level ?? 1;
@@ -37,7 +52,7 @@ export default function NinjaHome() {
 
         <div className="journal-main">
           <div className="scene">
-            <PixelNinja belt={belt} equipped={equipped} />
+            <PixelNinja belt={belt} equipped={equipped} hair={hair} color={hairColor} />
             <img className="pet" src="/kenney/char_0004.png" alt="" />
           </div>
           <div className="stats">
@@ -62,6 +77,32 @@ export default function NinjaHome() {
             <p className="hint">Minutes count only while the dojo computer says you are here.</p>
           </div>
         </div>
+
+        <button className="hair-toggle" type="button" onClick={() => setHairOpen((open) => !open)}>
+          {hairOpen ? "Hide hair" : "Hair"}
+        </button>
+        {hairOpen ? (
+          <section className="hair-menu">
+            <p>Boys</p>
+            <div className="hair-picks">
+              {boyHair.map(([id, label]) => (
+                <button key={id} type="button" className={hair === id ? "on" : ""} onClick={() => setHair(id)}>{label}</button>
+              ))}
+            </div>
+            <p>Girls</p>
+            <div className="hair-picks">
+              {girlHair.map(([id, label]) => (
+                <button key={id} type="button" className={hair === id ? "on" : ""} onClick={() => setHair(id)}>{label}</button>
+              ))}
+            </div>
+            <p>Color</p>
+            <div className="swatches">
+              {hairColors.map((color) => (
+                <button key={color} type="button" className={hairColor === color ? "on" : ""} style={{ background: color }} aria-label={color} onClick={() => setHairColor(color)} />
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <h2>Gear</h2>
         <div className="gear">

@@ -10,7 +10,7 @@ export default function CreditsPage() {
         <p>Face authors: JaidynReiman, ElizaWy, Stephen Challener (Redshrike).</p>
         <p>Source: https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/</p>
         <p>Shirt, shorts, and buzz-cut hair are LPC layers on the same walk frames as the body, so they move with each step.</p>
-        <p>Shirt: torso/clothes/longsleeve. Shorts: legs/shorts. Hair: hair/buzzcut. Same LPC licences and authors as the body.</p>
+        <p>Hair styles on the journal: buzz cut, bedhead, and cowlick for boys. Bob, long, and curls for girls. Ten colors are recolors of those sheets.</p>
       </section>
     </main>
   );
