@@ -9,7 +9,7 @@ export default function CreditsPage() {
         <p>Head authors: bluecarrot16, Benjamin K. Smith (BenCreating), Stephen Challener (Redshrike).</p>
         <p>Face authors: JaidynReiman, ElizaWy, Stephen Challener (Redshrike).</p>
         <p>Source: https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/</p>
-        <p>Grass tiles remain Kenney Pixel Platformer, CC0. No Stardew Valley or Minecraft art is used.</p>
+        <p>Every Ninja wears boxers. The blue shorts are an original overlay so no character is shown bare.</p>
       </section>
     </main>
   );
