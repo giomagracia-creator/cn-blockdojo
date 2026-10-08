@@ -10,10 +10,14 @@ export default function NinjaSignIn() {
   const [picked, setPicked] = useState<Ninja | null>(null);
   const [pin, setPin] = useState("");
   const [message, setMessage] = useState("Tap your name, then your PIN.");
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     browserSupabase().from("ninjas").select("id, first_name, last_initial, locked").eq("active", true).order("first_name")
-      .then(({ data }) => setNinjas(data ?? []));
+      .then(({ data }) => {
+        setNinjas(data ?? []);
+        setLoaded(true);
+      });
   }, []);
 
   async function signIn(next = pin) {
@@ -24,8 +28,8 @@ export default function NinjaSignIn() {
       setPin("");
       return;
     }
-    document.cookie = `bd_role=ninja; path=/; max-age=600`;
-    document.cookie = `bd_name=${encodeURIComponent(picked.first_name)}; path=/; max-age=600`;
+    document.cookie = `bd_role=ninja; path=/; max-age=14400`;
+    document.cookie = `bd_name=${encodeURIComponent(picked.first_name)}; path=/; max-age=14400`;
     sessionStorage.setItem("block-dojo-ninja", picked.id);
     window.location.href = "/ninja";
   }
@@ -34,9 +38,10 @@ export default function NinjaSignIn() {
     <main>
       <h1>{picked ? picked.first_name : "Find your name"}</h1>
       <section className="card roster">
+        {loaded && ninjas.length === 0 ? <p>No names yet. A Director imports the roster first.</p> : null}
         {ninjas.map((ninja) => (
-          <button key={ninja.id} type="button" className={picked?.id === ninja.id ? "picked" : ""} onClick={() => setPicked(ninja)}>
-            {ninja.first_name}
+          <button key={ninja.id} type="button" className={picked?.id === ninja.id ? "picked" : ""} disabled={ninja.locked} onClick={() => { setPicked(ninja); setPin(""); setMessage(ninja.locked ? "This Ninja is locked. Ask a Sensei." : "Tap your PIN."); }}>
+            {ninja.first_name}{ninja.locked ? " · locked" : ""}
           </button>
         ))}
       </section>
@@ -53,9 +58,10 @@ export default function NinjaSignIn() {
                   setPin(next);
                   if (next.length === 4) signIn(next);
                 }
-              }}>{key}</button>
+              }}>{key === "clear" ? "Clear" : key === "ok" ? "OK" : key}</button>
             ))}
           </div>
+          <button type="button" onClick={() => { setPicked(null); setPin(""); setMessage("Tap your name, then your PIN."); }}>Pick a different name</button>
           <p>{message}</p>
         </section>
       ) : null}

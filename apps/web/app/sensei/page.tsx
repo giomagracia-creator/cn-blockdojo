@@ -50,7 +50,10 @@ export default function SenseiPage() {
             </div>
             <div className="actions">
               <span>Safety</span>
-              <button className="stop" type="button" onClick={() => act("lock_screen", { target: ninja.id })}>Lock screen</button>
+              <button className="stop" type="button" onClick={() => {
+                if (!window.confirm(`Lock ${ninja.first_name}'s screen?`)) return;
+                act("lock_screen", { target: ninja.id });
+              }}>Lock screen</button>
               <button type="button" onClick={() => unlock(ninja.id)}>Unlock</button>
               <button className="warn" type="button" onClick={() => lookup(ninja.id)}>Look up PIN</button>
             </div>

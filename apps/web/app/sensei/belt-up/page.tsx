@@ -40,7 +40,10 @@ export default function BeltUpPage() {
         {ninjas.map((ninja) => (
           <p key={ninja.id}>
             {ninja.first_name} · {ninja.belt}
-            <button className="go" type="button" onClick={() => run("queue_belt_up", { target: ninja.id })}>Belt up</button>
+            <button className="go" type="button" onClick={() => {
+              if (!window.confirm(`${ninja.first_name} will move to the next belt and the lobby TV will celebrate.`)) return;
+              run("queue_belt_up", { target: ninja.id });
+            }}>Belt up</button>
           </p>
         ))}
       </section>

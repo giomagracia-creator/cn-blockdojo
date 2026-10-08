@@ -11,6 +11,7 @@ export default function HomePage() {
         <Link className="card" href="/staff/sign-in">Sensei / Staff</Link>
         <Link className="card" href="/parent">Parent</Link>
       </section>
+      <p className="hint">Ninjas tap their name and a PIN. Staff use email. Parents use the PIN from the dojo.</p>
     </main>
   );
 }

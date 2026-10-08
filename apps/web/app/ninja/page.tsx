@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGame } from "../game";
 import { PixelNinja } from "./pixel";
 
@@ -15,7 +15,18 @@ const girlHair = [
   ["long", "Long"],
   ["curly_short", "Curls"],
 ];
-const hairColors = ["#1c1c1e", "#6b3a1f", "#a84820", "#e2b657", "#f0d48a", "#c0392b", "#338fbf", "#1d4e89", "#7b4ea3", "#e38aaa"];
+const hairColors = [
+  ["#1c1c1e", "Black"],
+  ["#6b3a1f", "Brown"],
+  ["#a84820", "Auburn"],
+  ["#e2b657", "Gold"],
+  ["#f0d48a", "Blonde"],
+  ["#c0392b", "Red"],
+  ["#338fbf", "Blue"],
+  ["#1d4e89", "Navy"],
+  ["#7b4ea3", "Purple"],
+  ["#e38aaa", "Pink"],
+];
 
 const slots = [
   ["Hat", "Empty. Hats show up in the locker."],
@@ -29,14 +40,38 @@ export default function NinjaHome() {
   const { profile, equipped, owned, equip } = useGame();
   const [tip, setTip] = useState("Tap a slot to see what it does.");
   const [hair, setHair] = useState("buzzcut");
-  const [hairColor, setHairColor] = useState(hairColors[0]);
+  const [hairColor, setHairColor] = useState(hairColors[0][0]);
   const [sprite, setSprite] = useState<"boy" | "girl">("boy");
+  const [ready, setReady] = useState(false);
   const name = profile?.first_name ?? "Pixel";
   const belt = profile?.belt ?? "White";
   const level = profile?.level ?? 1;
   const xp = profile?.xp_in_level ?? 0;
   const coins = profile?.coins ?? 0;
   const xpWidth = Math.min(100, (xp / 30) * 100);
+  const lookName = hairColors.find(([hex]) => hex === hairColor)?.[1] ?? "Black";
+
+  useEffect(() => {
+    const id = sessionStorage.getItem("block-dojo-ninja") ?? "guest";
+    const saved = localStorage.getItem(`block-dojo-look-${id}`);
+    if (saved) {
+      try {
+        const look = JSON.parse(saved) as { sprite?: string; hair?: string; color?: string };
+        if (look.sprite === "boy" || look.sprite === "girl") setSprite(look.sprite);
+        if (look.hair) setHair(look.hair);
+        if (look.color) setHairColor(look.color);
+      } catch {
+        localStorage.removeItem(`block-dojo-look-${id}`);
+      }
+    }
+    setReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+    const id = sessionStorage.getItem("block-dojo-ninja") ?? "guest";
+    localStorage.setItem(`block-dojo-look-${id}`, JSON.stringify({ sprite, hair, color: hairColor }));
+  }, [ready, sprite, hair, hairColor]);
 
   return (
     <main className="journal-wrap">
@@ -61,8 +96,7 @@ export default function NinjaHome() {
             </div>
             <div>
               <span>Session</span>
-              <b>0 / 40 min</b>
-              <i className="meter session"><em style={{ width: "0%" }} /></i>
+              <b>At the dojo</b>
             </div>
             <div>
               <span>Coins</span>
@@ -77,7 +111,7 @@ export default function NinjaHome() {
         </div>
 
         <details className="options" open>
-          <summary>Options</summary>
+          <summary>Options · {sprite === "girl" ? "Girl" : "Boy"} · {lookName}</summary>
           <section className="hair-menu">
             <p>Body</p>
             <div className="hair-picks">
@@ -98,11 +132,12 @@ export default function NinjaHome() {
             </div>
             <p>Color</p>
             <div className="swatches">
-              {hairColors.map((color) => (
-                <button key={color} type="button" className={hairColor === color ? "on" : ""} style={{ background: color }} aria-label={color} onClick={() => setHairColor(color)} />
+              {hairColors.map(([color, label]) => (
+                <button key={color} type="button" className={hairColor === color ? "on" : ""} style={{ background: color }} aria-label={label} title={label} onClick={() => setHairColor(color)} />
               ))}
             </div>
           </section>
+          <p className="hint">This look stays on this computer for the next sign-in.</p>
         </details>
 
         <h2>Gear</h2>

@@ -40,7 +40,7 @@ export default function ParentPage() {
       <h1>Parent</h1>
       {!parentId ? (
         <form className="card" onSubmit={signIn}>
-          <input value={pin} onChange={(event) => setPin(event.target.value)} placeholder="6-digit PIN" />
+          <label>Parent PIN <input value={pin} onChange={(event) => setPin(event.target.value)} inputMode="numeric" placeholder="6 digits" /></label>
           <button className="go" type="submit">Open updates</button>
           <p>{message}</p>
         </form>

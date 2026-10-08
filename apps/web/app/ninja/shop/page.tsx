@@ -32,6 +32,7 @@ export default function ShopPage() {
   return (
     <main>
       <h1>Shop</h1>
+      {items.length === 0 ? <section className="card"><p>Nothing is for sale yet. A Director adds items from Coins.</p></section> : null}
       {items.map((item) => (
         <section className="card" key={item.id}>
           <h2>{item.name}</h2>
