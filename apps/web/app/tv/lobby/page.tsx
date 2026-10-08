@@ -151,6 +151,7 @@ export default function LobbyPage() {
           <p>Belt up</p>
           <h1>{current.first_name}</h1>
           <p className="swap"><i style={{ background: colors[current.from_belt] ?? "#fff" }} /> {current.from_belt} to <i style={{ background: colors[current.to_belt] ?? "#fff" }} /> {current.to_belt}</p>
+          <button type="button" onClick={() => { sound.current?.close(); sound.current = ceremony(); }}>Play again</button>
           <div className="confetti" aria-hidden="true">{Array.from({ length: 18 }, (_, index) => <span key={index} style={{ left: `${(index * 37) % 100}%`, animationDelay: `${index * 0.15}s` }} />)}</div>
         </section>
       ) : (
