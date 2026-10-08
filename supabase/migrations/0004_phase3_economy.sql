@@ -65,9 +65,11 @@ where not exists (select 1 from public.shop_items where name = 'Dojo snack');
 insert into public.parents (name, pin_hash)
 select 'Demo Parent', crypt('135790', gen_salt('bf'))
 where not exists (select 1 from public.parents where name = 'Demo Parent');
+-- Demo Parent contains Pixel, the demo Ninja. No other Ninja is linked.
 insert into public.parent_ninja (parent_id, ninja_id)
-select p.id, n.id from public.parents p, public.ninjas n
-where p.name = 'Demo Parent' and n.first_name = 'Pixel'
+select p.id, n.id from public.parents p
+join public.ninjas n on n.first_name = 'Pixel'
+where p.name = 'Demo Parent'
 on conflict do nothing;
 
 create or replace function public.coin_balance(target uuid)

@@ -11,7 +11,7 @@ export default function ParentPage() {
   const [signed, setSigned] = useState(false);
   const [name, setName] = useState("");
   const [children, setChildren] = useState<Child[]>([]);
-  const [message, setMessage] = useState("Demo parent PIN is 135790.");
+  const [message, setMessage] = useState("Demo parent PIN is 135790. This account contains Pixel only.");
 
   async function signIn(event: FormEvent) {
     event.preventDefault();
