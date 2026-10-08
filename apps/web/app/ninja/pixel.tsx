@@ -53,13 +53,15 @@ export function PixelNinja({ hair, color }: { belt: string; equipped: string; ha
     const body = bases.map(load);
     const top = load(`/lpc/hair/${hair}.png`);
     let step = 0;
-    const timer = setInterval(() => {
+    const draw = () => {
       const [row, frame] = steps[step];
+      if (!body[step].complete || !top.complete) return;
       view.clearRect(0, 0, 64, 64);
-      if (body[step].complete) view.drawImage(body[step], 0, 0);
-      if (top.complete) paintHair(top, row, frame, color, view);
+      view.drawImage(body[step], 0, 0);
+      paintHair(top, row, frame, color, view);
       step = (step + 1) % steps.length;
-    }, 140);
+    };
+    const timer = setInterval(draw, 140);
     return () => clearInterval(timer);
   }, [hair, color]);
 

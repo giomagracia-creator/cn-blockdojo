@@ -3,7 +3,7 @@ export default function CreditsPage() {
     <main>
       <h1>Credits</h1>
       <section className="card">
-        <p>The body is the LPC teen base with a round head, long-sleeve shirt, and shorts, so it does not read as a boy or a girl. Hair is what changes the look.</p>
+        <p>The body, head, and face are a matched LPC set, with a long-sleeve shirt and shorts. Hair sits on that same frame so it does not float.</p>
         <p>Licences: OGA-BY 3.0, CC-BY-SA 3.0, GPL 3.0. You must credit the authors.</p>
         <p>Body authors: bluecarrot16, JaidynReiman, Benjamin K. Smith (BenCreating), Evert, Eliza Wyatt (ElizaWy), TheraHedwig, MuffinElZangano, Durrani, Johannes Sjölund (wulax), Stephen Challener (Redshrike).</p>
         <p>Head authors: bluecarrot16, Benjamin K. Smith (BenCreating), Stephen Challener (Redshrike).</p>
