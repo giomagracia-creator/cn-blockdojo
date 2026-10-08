@@ -16,11 +16,14 @@ export default function DirectorPage() {
   const [sessionName, setSessionName] = useState("");
   const [staffEmail, setStaffEmail] = useState("");
   const [role, setRole] = useState("sensei");
+  const [note, setNote] = useState("");
+  const [report, setReport] = useState<{ minutes_14d: number; open_alerts: number; coins_spent: number; ninjas: number; last_ping: string | null } | null>(null);
+  const [notes, setNotes] = useState<Array<{ id: string; note: string; created_at: string }>>([]);
   const [message, setMessage] = useState("");
 
   async function load() {
     const supabase = browserSupabase();
-    const { data: dojos } = await supabase.from("dojos").select("id, name, seat_limit").limit(1);
+    const { data: dojos } = await supabase.from("dojos").select("id, name, seat_limit").order("name").limit(1);
     const first = dojos?.[0] ?? null;
     setDojo(first);
     if (first) setSeat(String(first.seat_limit));
@@ -28,6 +31,10 @@ export default function DirectorPage() {
     setSessions(sessionRows ?? []);
     const { data: deviceRows } = await supabase.from("devices").select("id, name");
     setDevices(deviceRows ?? []);
+    const summary = await supabase.rpc("pilot_report");
+    if (summary.data && typeof summary.data === "object") setReport(summary.data);
+    const saved = await supabase.rpc("list_pilot_notes");
+    setNotes(Array.isArray(saved.data) ? saved.data : []);
   }
 
   useEffect(() => { load(); }, []);
@@ -69,6 +76,52 @@ export default function DirectorPage() {
     <main>
       <p className="mark">OVERVIEW</p>
       <h1>{dojo?.name ?? "Block Dojo"}</h1>
+      <section className="card">
+        <h2>Pilot</h2>
+        <p>Active minutes, 14 days: {report?.minutes_14d ?? 0}</p>
+        <p>Open alerts: {report?.open_alerts ?? 0}</p>
+        <p>Coins spent, 14 days: {report?.coins_spent ?? 0}</p>
+        <p>Ninjas: {report?.ninjas ?? 0}</p>
+        <p>Last keep-alive: {report?.last_ping ? new Date(report.last_ping).toLocaleString() : "Not yet"}</p>
+        <p>
+          <a href="/tv/central">Central TV</a>
+          {" · "}
+          <a href="/tv/dojo-2">Dojo 2 TV</a>
+          {" · "}
+          <a href="/tv/lobby">Lobby TV</a>
+        </p>
+        <button type="button" onClick={async () => {
+          const { data, error } = await browserSupabase().rpc("keep_alive");
+          setMessage(error?.message ?? String(data));
+          load();
+        }}>Run keep-alive</button>
+        <button type="button" onClick={async () => {
+          const { data, error } = await browserSupabase().rpc("purge_old");
+          setMessage(error?.message ?? String(data));
+        }}>Purge old rows</button>
+        <button type="button" onClick={async () => {
+          const { data, error } = await browserSupabase().rpc("backup_snapshot");
+          if (error || !data) { setMessage(error?.message ?? "No backup."); return; }
+          const file = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(file);
+          link.download = "block-dojo-backup.json";
+          link.click();
+          setMessage("Backup downloaded. Keep that file.");
+        }}>Download backup</button>
+      </section>
+      <form className="card" onSubmit={async (event) => {
+        event.preventDefault();
+        const { data, error } = await browserSupabase().rpc("add_pilot_note", { note });
+        setMessage(error?.message ?? String(data));
+        setNote("");
+        load();
+      }}>
+        <h2>Ninja feedback</h2>
+        {notes.map((item) => <p key={item.id}>{item.note}</p>)}
+        <input value={note} onChange={(event) => setNote(event.target.value)} placeholder="What did the Ninjas say?" />
+        <button type="submit">Save note</button>
+      </form>
       <section className="card">
         <h2>System status</h2>
         <p>The dojo page is live. Database checks stay here, not on the front door.</p>

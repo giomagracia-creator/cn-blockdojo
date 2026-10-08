@@ -1,5 +1,5 @@
 export { DEFAULT_SETTINGS, baseXpForLevel, coinsPerActiveMinute, earnForMinute, xpRateForStreak } from "./defaults";
 
-export const PHASE = 3 as const;
+export const PHASE = 5 as const;
 export const APP_NAME = "Block Dojo";
 export const LOCATION_NAME = "Code Ninjas Central Edmonton";

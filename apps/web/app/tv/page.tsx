@@ -5,19 +5,22 @@ import { browserSupabase } from "../../lib/supabase";
 
 type Ninja = { id: string; first_name: string; level: number; total_xp: number; coins: number; belt: string; screen_locked: boolean };
 
-export default function TvPage() {
+export function Floor({ room }: { room?: string }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [ninjas, setNinjas] = useState<Ninja[]>([]);
 
   useEffect(() => {
     const load = async () => {
-      const { data } = await browserSupabase().rpc("live_board");
+      const query = room
+        ? browserSupabase().rpc("live_board_for", { room })
+        : browserSupabase().rpc("live_board");
+      const { data } = await query;
       setNinjas(Array.isArray(data) ? data : []);
     };
     load();
     const timer = setInterval(load, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [room]);
 
   useEffect(() => {
     const ctx = canvas.current?.getContext("2d");
@@ -42,8 +45,12 @@ export default function TvPage() {
   return (
     <main>
       <p className="mark">DOJO TV</p>
-      <h1>Block Dojo</h1>
+      <h1>{room === "dojo-2" ? "Dojo 2" : "Block Dojo"}</h1>
       <canvas ref={canvas} width={960} height={420} />
     </main>
   );
+}
+
+export default function TvPage() {
+  return <Floor />;
 }
