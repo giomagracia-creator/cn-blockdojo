@@ -28,32 +28,7 @@ function ceremony() {
   master.gain.value = 0.85;
   master.connect(audio.destination);
 
-  const drone = audio.createOscillator();
-  const droneGain = audio.createGain();
-  drone.type = "sine";
-  drone.frequency.value = 55;
-  droneGain.gain.setValueAtTime(0.001, now);
-  droneGain.gain.linearRampToValueAtTime(0.16, now + 3.4);
-  droneGain.gain.exponentialRampToValueAtTime(0.001, now + 4.2);
-  drone.connect(droneGain).connect(master);
-  drone.start(now);
-  drone.stop(now + 4.3);
-
-  [262, 294, 330, 349, 392, 440, 494, 523, 587, 659, 784, 880].forEach((freq, index) => {
-    const start = now + index * 0.28;
-    const tone = audio.createOscillator();
-    const gain = audio.createGain();
-    tone.type = "triangle";
-    tone.frequency.value = freq;
-    gain.gain.setValueAtTime(0.001, start);
-    gain.gain.linearRampToValueAtTime(0.07 + index * 0.012, start + 0.04);
-    gain.gain.exponentialRampToValueAtTime(0.001, start + 0.34);
-    tone.connect(gain).connect(master);
-    tone.start(start);
-    tone.stop(start + 0.36);
-  });
-
-  const gongAt = now + 3.5;
+  const gongAt = now + 0.15;
   const gong = audio.createOscillator();
   const gongGain = audio.createGain();
   gong.type = "sine";
@@ -112,6 +87,41 @@ export default function LobbyPage() {
   const [muted, setMuted] = useState(false);
   const [shown, setShown] = useState("");
   const sound = useRef<AudioContext | null>(null);
+  const player = useRef<{ mute: () => void; unMute: () => void; playVideo: () => void; seekTo: (seconds: number) => void; setVolume: (volume: number) => void; destroy: () => void } | null>(null);
+
+  useEffect(() => {
+    const start = () => {
+      const youtube = (window as unknown as { YT: { Player: new (id: string, options: object) => NonNullable<typeof player.current> } }).YT;
+      player.current = new youtube.Player("theme-song", {
+        videoId: "V319vR8qes0",
+        playerVars: { autoplay: 1, start: 57, controls: 1, rel: 0, modestbranding: 1 },
+        events: {
+          onReady: (event: { target: { setVolume: (volume: number) => void; seekTo: (seconds: number) => void; playVideo: () => void } }) => {
+            event.target.setVolume(45);
+            event.target.seekTo(57);
+            event.target.playVideo();
+          },
+          onStateChange: (event: { data: number; target: { seekTo: (seconds: number) => void; playVideo: () => void } }) => {
+            if (event.data === 0) {
+              event.target.seekTo(57);
+              event.target.playVideo();
+            }
+          },
+        },
+      });
+    };
+    const page = window as unknown as { YT?: { Player?: unknown }; onYouTubeIframeAPIReady?: () => void };
+    if (page.YT?.Player) start();
+    else {
+      page.onYouTubeIframeAPIReady = start;
+      if (!document.querySelector("script[src='https://www.youtube.com/iframe_api']")) {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.body.appendChild(tag);
+      }
+    }
+    return () => { player.current?.destroy(); };
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -132,20 +142,30 @@ export default function LobbyPage() {
   useEffect(() => {
     if (!current || current.id === shown || muted) return;
     setShown(current.id);
+    player.current?.setVolume(18);
+    window.setTimeout(() => player.current?.setVolume(45), 8000);
     sound.current?.close();
     sound.current = ceremony();
   }, [current, muted, shown]);
 
   return (
-    <main className={current ? "lobby live" : "lobby"}>
+    <main className={current ? "lobby live" : "lobby"} onClick={() => { if (!muted) player.current?.playVideo(); }}>
       <button className="warn" type="button" onClick={() => {
         sound.current?.close();
         setMuted((value) => {
           const next = !value;
-          if (!next && current) sound.current = ceremony();
+          if (next) player.current?.mute();
+          else {
+            player.current?.unMute();
+            player.current?.playVideo();
+            if (current) sound.current = ceremony();
+          }
           return next;
         });
       }}>{muted ? "Sound off" : "Sound on"}</button>
+      <div className="theme-song">
+        <div id="theme-song" />
+      </div>
       {current ? (
         <section className="celebrate">
           <p>Belt up</p>

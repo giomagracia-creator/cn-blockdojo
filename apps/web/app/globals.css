@@ -266,3 +266,5 @@ label { display: block; margin: 8px 0; }
 .confetti span:nth-child(odd) { background: #f0d48a; }
 .confetti span:nth-child(3n) { background: #e38aaa; }
 @keyframes drop { to { transform: translateY(100vh) rotate(180deg); } }
+.theme-song { position: fixed; right: 16px; bottom: 16px; width: 320px; z-index: 3; background: #1c1c1e; border: 4px solid #f7f4ee; }
+.theme-song iframe { width: 320px; height: 180px; }
