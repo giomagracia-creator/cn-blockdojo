@@ -51,7 +51,7 @@ export default function NinjaHome() {
 
         <div className="journal-main">
           <div className="scene">
-            <PixelNinja belt={belt} equipped={equipped} hair={hair} color={hairColor} />
+            <PixelNinja belt={belt} equipped={equipped} hair={hair} color={hairColor} sprite={sprite} />
             <img className="pet" src="/kenney/char_0004.png" alt="" />
           </div>
           <div className="stats">

@@ -7,8 +7,6 @@ for (const row of [2, 3, 0, 1]) {
   for (const frame of [0, 2, 4, 6]) steps.push([row, frame]);
 }
 
-const bases = steps.map((_, index) => `/lpc/base-${String(index).padStart(2, "0")}.png`);
-
 function load(src: string) {
   const image = new Image();
   image.src = src;
@@ -43,27 +41,28 @@ function paintHair(source: HTMLImageElement, row: number, frame: number, color: 
   dest.drawImage(scratch, 0, 0);
 }
 
-export function PixelNinja({ hair, color }: { belt: string; equipped: string; hair: string; color: string }) {
+export function PixelNinja({ hair, color, sprite }: { belt: string; equipped: string; hair: string; color: string; sprite: "boy" | "girl" }) {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const view = canvas.current?.getContext("2d");
     if (!view) return;
     view.imageSmoothingEnabled = false;
-    const body = bases.map(load);
+    const prefix = sprite === "girl" ? "/lpc/base-f-" : "/lpc/base-";
+    const layers = steps.map((_, index) => load(`${prefix}${String(index).padStart(2, "0")}.png`));
     const top = load(`/lpc/hair/${hair}.png`);
     let step = 0;
     const draw = () => {
       const [row, frame] = steps[step];
-      if (!body[step].complete || !top.complete) return;
+      if (!layers[step].complete || !top.complete) return;
       view.clearRect(0, 0, 64, 64);
-      view.drawImage(body[step], 0, 0);
+      view.drawImage(layers[step], 0, 0);
       paintHair(top, row, frame, color, view);
       step = (step + 1) % steps.length;
     };
     const timer = setInterval(draw, 140);
     return () => clearInterval(timer);
-  }, [hair, color]);
+  }, [hair, color, sprite]);
 
   return <canvas ref={canvas} className="pixel lpc" width={64} height={64} aria-label="Ninja with chosen hair" />;
 }
